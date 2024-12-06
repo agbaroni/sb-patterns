@@ -1,0 +1,22 @@
+FROM registry.fedoraproject.org/fedora-minimal:41
+
+USER 0:0
+
+WORKDIR /opt
+
+RUN /usr/bin/microdnf -y install tar gzip \
+ && /usr/bin/curl -JLOk https://github.com/grafana/tempo/releases/download/v2.6.1/tempo_2.6.1_linux_amd64.tar.gz \
+ && /usr/bin/tar -xzf tempo_2.6.1_linux_amd64.tar.gz -C /tmp \
+ && /usr/bin/mkdir -m 0770 -p /opt/tempo/bin \
+ && /usr/bin/install -m 0755 /tmp/tempo /opt/tempo/bin/
+ && /usr/bin/mkdir -m 0770 -p /srv/tempo/data
+
+COPY --chmod=0640 application.yaml /etc/opt/
+
+USER 1000:0
+
+EXPOSE 9090
+
+VOLUME /srv/prometheus/data
+
+ENTRYPOINT [ "/opt/prometheus/prometheus", "--config.file", "/etc/opt/prometheus.yaml", "--storage.tsdb.path", "/srv/prometheus/data" ]

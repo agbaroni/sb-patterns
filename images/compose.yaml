@@ -1,0 +1,72 @@
+name: spring-boot-patterns
+networks:
+  sbps:
+services:
+  grafana:
+    build:
+      context: grafana
+      dockerfile: Containerfile
+    depends_on:
+      - loki
+      - prometheus
+    hostname: grafana
+    image: sbps/grafana:latest
+    networks:
+      - sbps
+    ports:
+      - 3000:3000
+    pull_policy: build
+    restart: on-failure:5
+    volumes:
+      - source: grafana-data
+        target: /srv/grafana/data
+        type: volume
+  loki:
+    build:
+      context: loki
+      dockerfile: Containerfile
+    hostname: loki
+    image: sbps/loki:latest
+    networks:
+      - sbps
+    pull_policy: build
+    restart: on-failure:5
+    volumes:
+      - source: loki-data
+        target: /srv/loki/data
+        type: volume
+  minio:
+    build:
+      context: minio
+      dockerfile: Containerfile
+    hostname: minio
+    image: sbps/minio:latest
+    networks:
+      - sbps
+    ports:
+      - 9001:9001
+    pull_policy: build
+    restart: on-failure:5
+    volumes:
+      - source: minio-data
+        target: /srv/minio/data
+        type: volume
+  prometheus:
+    build:
+      context: prometheus
+      dockerfile: Containerfile
+    hostname: prometheus
+    image: sbps/prometheus:latest
+    networks:
+      - sbps
+    pull_policy: build
+    restart: on-failure:5
+    volumes:
+      - source: prometheus-data
+        target: /srv/prometheus/data
+        type: volume
+volumes:
+  grafana-data:
+  loki-data:
+  minio-data:
+  prometheus-data:

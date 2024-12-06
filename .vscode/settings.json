@@ -1,0 +1,11 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "prometheus-ds.yaml"
+            ],
+            "url": "https://json.schemastore.org/yamllint.json"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+apiVersion: 1
+datasources:
+  - access: proxy
+    editable: false
+    isDefault: false
+    name: Loki
+    type: loki
+    url: http://loki:3100
+deleteDatasources:
+  - name: Loki
+prune: true

@@ -1,0 +1,22 @@
+FROM registry.fedoraproject.org/fedora-minimal:41
+
+USER 0:0
+
+WORKDIR /opt
+
+RUN /usr/bin/mkdir -m 0770 -p /opt/minio/bin \
+ && /usr/bin/curl -JLk https://dl.min.io/server/minio/release/linux-amd64/minio > /opt/minio/bin/minio \
+ && /usr/bin/chmod 0755 /opt/minio/bin/minio \
+ && /usr/bin/mkdir -m 0770 -p /srv/minio/data
+
+USER 1000:0
+
+ENV MINIO_ROOT_USER=admin
+ENV MINIO_ROOT_PASSWORD=password
+
+EXPOSE 9000
+EXPOSE 9001
+
+VOLUME /srv/minio/data
+
+ENTRYPOINT [ "/opt/minio/bin/minio", "server", "/srv/minio/data", "--console-address=:9001" ]

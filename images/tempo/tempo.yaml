@@ -1,0 +1,17 @@
+server:
+  http_listen_port: 3200
+storage:
+  trace:
+    backend: s3
+    local:
+      path: /srv/tempo/data/blocks
+    s3:
+      access_key: admin
+      bucket: grafana-traces-data
+      enable_dual_stack: false
+      endpoint: minio:9000
+      forcepathstyle: true
+      insecure: true
+      secret_key: password
+    wal:
+      path: /srv/tempo/data/wal

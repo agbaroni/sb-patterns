@@ -1,0 +1,31 @@
+auth_enabled: false
+common:
+  instance_addr: 0.0.0.0
+  path_prefix: /srv/loki/data
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+  storage:
+    filesystem:
+      chunks_directory: /srv/loki/data/chunks
+      rules_directory: /srv/loki/data/rules
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 64
+ruler:
+  alertmanager_url: http://prometheus:9093
+schema_config:
+  configs:
+    - from: '2024-12-01'
+      index:
+        period: 24h
+        prefix: index_
+      object_store: filesystem
+      schema: v13
+      store: boltdb-shipper
+server:
+  http_listen_port: 3100

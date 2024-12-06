@@ -1,0 +1,7 @@
+global:
+  query_log_file: /var/log/prometheus/queries.log
+  scrape_interval: 5s
+  scrape_timeout: 1s
+rule_files: []
+scrape_config_files:
+  - /etc/opt/application.yaml
